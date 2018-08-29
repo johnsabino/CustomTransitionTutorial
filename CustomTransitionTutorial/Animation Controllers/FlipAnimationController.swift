@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SwipeAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
+class FlipAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     //Enum para especificar o tipo de transição
     enum TransitionType {
         case presenting
