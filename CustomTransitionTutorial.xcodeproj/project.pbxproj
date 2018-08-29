@@ -16,7 +16,7 @@
 		BE137C6E210894C70002E81C /* CustomTransitionTutorialUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE137C6D210894C70002E81C /* CustomTransitionTutorialUITests.swift */; };
 		BE137C7C21089CA40002E81C /* CongratsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE137C7B21089CA40002E81C /* CongratsViewController.swift */; };
 		BE46F08E2109ED5B00C4258E /* TransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46F08D2109ED5A00C4258E /* TransitioningDelegate.swift */; };
-		BE46F0902109EE6900C4258E /* SwipeAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46F08F2109EE6900C4258E /* SwipeAnimationController.swift */; };
+		BE46F0902109EE6900C4258E /* FlipAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46F08F2109EE6900C4258E /* FlipAnimationController.swift */; };
 		BE46F0922109EF2E00C4258E /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46F0912109EF2E00C4258E /* PresentationController.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,7 +53,7 @@
 		BE137C6F210894C70002E81C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BE137C7B21089CA40002E81C /* CongratsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongratsViewController.swift; sourceTree = "<group>"; };
 		BE46F08D2109ED5A00C4258E /* TransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitioningDelegate.swift; sourceTree = "<group>"; };
-		BE46F08F2109EE6900C4258E /* SwipeAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeAnimationController.swift; sourceTree = "<group>"; };
+		BE46F08F2109EE6900C4258E /* FlipAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipAnimationController.swift; sourceTree = "<group>"; };
 		BE46F0912109EF2E00C4258E /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,7 +137,7 @@
 		BE137C7D21089DD60002E81C /* Animation Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BE46F08F2109EE6900C4258E /* SwipeAnimationController.swift */,
+				BE46F08F2109EE6900C4258E /* FlipAnimationController.swift */,
 				BE46F08D2109ED5A00C4258E /* TransitioningDelegate.swift */,
 				BE46F0912109EF2E00C4258E /* PresentationController.swift */,
 			);
@@ -216,7 +216,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Ada 2018";
 				TargetAttributes = {
 					BE137C49210894C70002E81C = {
@@ -291,7 +291,7 @@
 				BE46F08E2109ED5B00C4258E /* TransitioningDelegate.swift in Sources */,
 				BE137C50210894C70002E81C /* Screen1ViewController.swift in Sources */,
 				BE137C4E210894C70002E81C /* AppDelegate.swift in Sources */,
-				BE46F0902109EE6900C4258E /* SwipeAnimationController.swift in Sources */,
+				BE46F0902109EE6900C4258E /* FlipAnimationController.swift in Sources */,
 				BE46F0922109EF2E00C4258E /* PresentationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,6 +361,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -368,6 +369,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -395,7 +397,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -418,6 +420,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -425,6 +428,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -446,7 +450,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

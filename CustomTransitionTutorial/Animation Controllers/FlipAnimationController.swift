@@ -24,13 +24,36 @@ class FlipAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     
     //Método que realiza a animação
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        let inView   = transitionContext.containerView
-        let toView   = transitionContext.view(forKey: .to)!
-        let fromView = transitionContext.view(forKey: .from)!
+        let containerView   = transitionContext.containerView
+        guard
+            let fromViewController = transitionContext.viewController(forKey: .from),
+            let toViewController = transitionContext.viewController(forKey: .to),
+            let fromView = fromViewController.view,
+            let toView = toViewController.view else {
+                return
+        }
+        toView.frame = fromViewController.view.frame
+        containerView.insertSubview(toView, belowSubview: fromView)
         
-        var frame = inView.bounds
+        // Cria um background view
+        let backgroundView = UIView(frame: transitionContext.initialFrame(for: fromViewController))
+        backgroundView.backgroundColor = UIColor.black
         
-        //Função para calcular os flips de uma rotação 3D
+        containerView.addSubview(backgroundView)
+        
+        // Tira um snapshot(print) da presenting view e presented view
+        let fromSnapshotRect = fromView.bounds
+        let toSnapshotRect = toView.bounds
+        guard
+            let fromSnapshotView = fromView.resizableSnapshotView(from: fromSnapshotRect, afterScreenUpdates: false, withCapInsets: .zero),
+            let toSnapshotView = toView.resizableSnapshotView(from: toSnapshotRect, afterScreenUpdates: true, withCapInsets: .zero) else {
+                return
+        }
+        
+        backgroundView.addSubview(fromSnapshotView)
+        backgroundView.insertSubview(toSnapshotView, belowSubview: fromSnapshotView)
+        
+        // Função para calcular os flips de uma rotação 3D
         func flipTransform(angle: CGFloat, offset: CGFloat = 0) -> CATransform3D {
             var transform = CATransform3DMakeTranslation(offset, 0, 0)
             transform.m34 = -1.0 / 400
@@ -38,10 +61,7 @@ class FlipAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
             return transform
         }
         
-        toView.frame = inView.bounds
-        toView.alpha = 0
-        
-        //Variáveis que armazenam os estados da animação 
+        // Variáveis que armazenam os estados(keyFrames) da animação
         let transformFromStart:  CATransform3D
         let transformFromEnd:    CATransform3D
         let transformFromMiddle: CATransform3D
@@ -49,67 +69,66 @@ class FlipAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
         let transformToMiddle:   CATransform3D
         let transformToEnd:      CATransform3D
         
-        //Cálculo dos estados de animação para cada tipo especificado, caso estiver presenting irá realizar uma rotação da direita para esquerda, caso estiver dismissing irá realizar uma rotação da esquerda para direita
+        // Cálculo dos estados de animação para cada tipo especificado, caso estiver presenting irá realizar uma rotação da direita para esquerda, caso estiver dismissing irá realizar uma rotação da esquerda para direita
         switch transitionType {
-        case .presenting:
-            transformFromStart  = flipTransform(angle: 0,        offset: inView.bounds.size.width / 2)
-            transformFromEnd    = flipTransform(angle: -.pi,     offset: inView.bounds.size.width / 2)
-            transformFromMiddle = flipTransform(angle: -.pi / 2)
-            transformToStart    = flipTransform(angle: .pi,      offset: -inView.bounds.size.width / 2)
-            transformToMiddle   = flipTransform(angle: .pi / 2)
-            transformToEnd      = flipTransform(angle: 0,        offset: -inView.bounds.size.width / 2)
-            
-            toView.layer.anchorPoint = CGPoint(x: 0, y: 0.5)
-            fromView.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
-            
         case .dismissing:
-            transformFromStart  = flipTransform(angle: 0,        offset: -inView.bounds.size.width / 2)
-            transformFromEnd    = flipTransform(angle: .pi,      offset: -inView.bounds.size.width / 2)
-            transformFromMiddle = flipTransform(angle: .pi / 2)
-            transformToStart    = flipTransform(angle: -.pi,     offset: inView.bounds.size.width / 2)
-            transformToMiddle   = flipTransform(angle: -.pi / 2)
-            transformToEnd      = flipTransform(angle: 0,        offset: inView.bounds.size.width / 2)
+            transformFromStart  = flipTransform(angle: 0,        offset: containerView.bounds.size.width / 2)
+            transformFromEnd    = flipTransform(angle: -.pi,     offset: containerView.bounds.size.width / 2)
+            transformFromMiddle = flipTransform(angle: -.pi / 2)
+            transformToStart    = flipTransform(angle: .pi,      offset: -containerView.bounds.size.width / 2)
+            transformToMiddle   = flipTransform(angle: .pi / 2)
+            transformToEnd      = flipTransform(angle: 0,        offset: -containerView.bounds.size.width / 2)
             
-            toView.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
-            fromView.layer.anchorPoint = CGPoint(x: 0, y: 0.5)
+            toSnapshotView.layer.anchorPoint = CGPoint(x: 0, y: 0.5)
+            fromSnapshotView.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
+            
+        case .presenting:
+            transformFromStart  = flipTransform(angle: 0,        offset: -containerView.bounds.size.width / 2)
+            transformFromEnd    = flipTransform(angle: .pi,      offset: -containerView.bounds.size.width / 2)
+            transformFromMiddle = flipTransform(angle: .pi / 2)
+            transformToStart    = flipTransform(angle: -.pi,     offset: containerView.bounds.size.width / 2)
+            transformToMiddle   = flipTransform(angle: -.pi / 2)
+            transformToEnd      = flipTransform(angle: 0,        offset: containerView.bounds.size.width / 2)
+            
+            toSnapshotView.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
+            fromSnapshotView.layer.anchorPoint = CGPoint(x: 0, y: 0.5)
         }
         
         
-        //Animação dos Estados previamente cálculados.
-        toView.layer.transform = transformToStart
-        fromView.layer.transform = transformFromStart
-        inView.addSubview(toView)
+        // Animação dos Estados previamente cálculados.
+        
+        toSnapshotView.layer.transform = transformToStart
+        fromSnapshotView.layer.transform = transformFromStart
         
         UIView.animateKeyframes(withDuration: self.transitionDuration(using: transitionContext), delay: 0, options: [], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.0) {
-                toView.alpha = 0
-                fromView.alpha = 1
+                toSnapshotView.alpha = 0
+                fromSnapshotView.alpha = 1
             }
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-                toView.layer.transform = transformToMiddle
-                fromView.layer.transform = transformFromMiddle
+                toSnapshotView.layer.transform = transformToMiddle
+                fromSnapshotView.layer.transform = transformFromMiddle
             }
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.0) {
-                toView.alpha = 1
-                fromView.alpha = 0
+                toSnapshotView.alpha = 1
+                fromSnapshotView.alpha = 0
             }
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
-                toView.layer.transform = transformToEnd
-                fromView.layer.transform = transformFromEnd
+                toSnapshotView.layer.transform = transformToEnd
+                fromSnapshotView.layer.transform = transformFromEnd
             }
         }, completion: { finished in
+            //  Remove todas as views da super view quando a animação terminar
+            fromSnapshotView.removeFromSuperview()
+            toSnapshotView.removeFromSuperview()
+            backgroundView.removeFromSuperview()
             
-            //Reseta os transforms e os anchorPoints das views quando a animação é finalizada
-            toView.layer.transform = CATransform3DIdentity
-            fromView.layer.transform = CATransform3DIdentity
-            toView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            fromView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-
+            // Caso a animação nao seja cancelada, será completada a transição
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         })
     }
     
-    //Tempo da animação caso não seja interativa
+    //Tempo da animação caso não seja interativa 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5
     }

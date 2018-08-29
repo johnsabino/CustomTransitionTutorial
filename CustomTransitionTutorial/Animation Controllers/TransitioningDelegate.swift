@@ -14,11 +14,11 @@ class TransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
     
     //Método que retorna a animação present ao passar o transitionType como .presenting
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SwipeAnimationController(transitionType: .presenting)
+        return FlipAnimationController(transitionType: .presenting)
     }
     //Método que retorna a animação dismiss ao passar o transitionType como .dismissing
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SwipeAnimationController(transitionType: .dismissing)
+        return FlipAnimationController(transitionType: .dismissing)
     }
     //Método utilizado para gerenciar as transições e animações da presented controller
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
